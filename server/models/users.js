@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
+const autoIncrement = require('mongoose-auto-increment')
 
 const UserSchema = new mongoose.Schema({
+  UserId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'UserId'
+  },
   username: {
     type: String,
     required: true
@@ -17,5 +22,5 @@ const UserSchema = new mongoose.Schema({
   {
     timestamps: true
   })
-
+UserSchema.plugin(autoIncrement.plugin, 'Users')
 module.exports = mongoose.model('Users', UserSchema)
