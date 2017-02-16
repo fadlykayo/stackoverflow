@@ -17,7 +17,7 @@ app.use(cors())
 // ====== Mongoose ======
 require('dotenv').config()
 let mongoose = require('mongoose')
-let connection = mongoose.connect(`${process.env.MONGODB_URI}`, function (err) { // localhost:27017 untuk di db
+mongoose.connect(`${process.env.MONGODB_URI}`, function (err) { // localhost:27017 untuk di db
   if (err) {
     console.log(err)
   } else {
@@ -25,10 +25,6 @@ let connection = mongoose.connect(`${process.env.MONGODB_URI}`, function (err) {
   }
 })
 mongoose.Promise = global.Promise
-
-// ====== autoIncrement ======
-let autoIncrement = require('mongoose-auto-increment')
-autoIncrement.initialize(connection)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))

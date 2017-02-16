@@ -1,11 +1,7 @@
 const mongoose = require('mongoose')
-const autoIncrement = require('mongoose-auto-increment')
+const sequenceGenerator = require('mongoose-sequence-plugin')
 
 const UserSchema = new mongoose.Schema({
-  UserId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'UserId'
-  },
   username: {
     type: String,
     required: true
@@ -22,5 +18,10 @@ const UserSchema = new mongoose.Schema({
   {
     timestamps: true
   })
-UserSchema.plugin(autoIncrement.plugin, 'Users')
+
+UserSchema.plugin(sequenceGenerator, {
+  field: 'UserId',
+  startAt: '1'
+})
+
 module.exports = mongoose.model('Users', UserSchema)

@@ -15,7 +15,7 @@
     "ejs": "~2.5.5",
     "express": "~4.14.1",
     "mongoose": "^4.8.2",
-    "mongoose-auto-increment": "^5.0.1",
+    "mongoose-sequence-plugin": "^1.0.5",
     "morgan": "~1.7.0",
     "password-hash": "^1.2.2",
     "serve-favicon": "~2.3.2"
