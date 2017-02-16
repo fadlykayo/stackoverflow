@@ -20,8 +20,8 @@ module.exports = {
   },
   createUser: (req, res) => {
     models.Users.create({
-      username: req.body.username,
-      password: req.body.password
+      username: req.body.username_reg,
+      password: hash.generate(req.body.password_reg)
     }).then(function (data) {
       res.send(data)
     }).catch(function (err) {
@@ -43,7 +43,7 @@ module.exports = {
     models.Users.findById(req.params.id).then(function (user) {
       user.update({
         username: req.body.username,
-        password: req.body.password
+        password: hash.generate(req.body.password)
       }).then(function (data) {
         res.send(data)
       }).catch(function (err) {
