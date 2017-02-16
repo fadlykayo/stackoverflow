@@ -69,35 +69,35 @@ router.delete('/api/answers/:id', answerController.deleteAnswer)
 router.get('/api', function (req, res, next) {
   res.send({
     endpoints: [
-      '/api/votequestions',
-      '/api/votequestions/:id'
-    ]
-  })
-})
-
-router.get('/api/votequestions', voteQuestionController.getVoteAnswers)
-
-router.post('/api/votequestions', voteQuestionController.createVoteAnswer)
-
-router.put('/api/votequestions/:id', voteQuestionController.updateVoteAnswer)
-
-router.delete('/api/votequestions/:id', voteQuestionController.deleteVoteAnswer)
-
-router.get('/api', function (req, res, next) {
-  res.send({
-    endpoints: [
       '/api/voteanswers',
       '/api/voteanswers/:id'
     ]
   })
 })
 
-router.get('/api/voteanswers', voteAnswerController.getVoteQuestions)
+router.get('/api/voteanswers', voteAnswerController.getVoteAnswers)
 
-router.post('/api/voteanswers', voteAnswerController.createVoteQuestion)
+router.post('/api/voteanswers', voteAnswerController.createVoteAnswer)
 
-router.put('/api/voteanswers/:id', voteAnswerController.updateVoteQuestion)
+router.put('/api/voteanswers/:id', voteAnswerController.updateVoteAnswer)
 
-router.delete('/api/voteanswers/:id', voteAnswerController.deleteVoteQuestion)
+router.delete('/api/voteanswers/:id', voteAnswerController.deleteVoteAnswer)
+
+router.get('/api', function (req, res, next) {
+  res.send({
+    endpoints: [
+      '/api/votequestions',
+      '/api/votequestions/:id'
+    ]
+  })
+})
+
+router.get('/api/votequestions', voteQuestionController.getVoteQuestions)
+
+router.post('/api/votequestions', voteQuestionController.createVoteQuestion)
+
+router.put('/api/votequestions/:id', voteQuestionController.updateVoteQuestion)
+
+router.delete('/api/votequestions/:id', voteQuestionController.deleteVoteQuestion)
 
 module.exports = router

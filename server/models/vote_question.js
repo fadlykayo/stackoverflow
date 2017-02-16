@@ -1,15 +1,16 @@
 'use strict'
 module.exports = function (sequelize, DataTypes) {
-  var Vote_Question = sequelize.define('Vote_Questions', {
+  var Vote_Questions = sequelize.define('Vote_Questions', {
     questionid: DataTypes.INTEGER,
     userid: DataTypes.INTEGER,
     value: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function (models) {
-        // associations can be defined here
+        Vote_Questions.belongsTo(models.Users)
+        Vote_Questions.belongsTo(models.Questions)
       }
     }
   })
-  return Vote_Question
+  return Vote_Questions
 }

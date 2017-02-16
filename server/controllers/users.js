@@ -1,7 +1,7 @@
 const models = require('../models')
 let jwt = require('jsonwebtoken')
 let hash = require('password-hash')
-let config = require('../configs/config.json')
+let config = require('../config/config.json')
 
 module.exports = {
   getUsers: (req, res) => {
