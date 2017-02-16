@@ -57,10 +57,9 @@ module.exports = {
         username: req.body.username
       }
     }).then(function (data) {
-      // console.log(data)
       if (hash.verify(req.body.password, data.password)) {
         let token = jwt.sign({data}, config.secret, {algorithm: 'HS256'}, {expiresIn: '1h'})
-        // req.session.isLogin = true
+        req.session.isLogin = true
         res.send({
           s: true,
           token: token

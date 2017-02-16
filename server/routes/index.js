@@ -51,7 +51,7 @@ router.get('/api', function (req, res, next) {
 
 // Questions
 
-router.get('/api/questions', sessionVerify, questionController.getQuestions)
+router.get('/api/questions', questionController.getQuestions)
 
 router.post('/api/questions', sessionVerify, questionController.createQuestion)
 
@@ -61,7 +61,7 @@ router.delete('/api/questions/:id', sessionVerify, questionController.deleteQues
 
 // Answers
 
-router.get('/api/answers', sessionVerify, answerController.getAnswers)
+router.get('/api/answers', answerController.getAnswers)
 
 router.post('/api/answers', sessionVerify, answerController.createAnswer)
 
@@ -71,7 +71,7 @@ router.delete('/api/answers/:id', sessionVerify, answerController.deleteAnswer)
 
 // Vote Answers
 
-router.get('/api/voteanswers', sessionVerify, voteAnswerController.getVoteAnswers)
+router.get('/api/voteanswers', voteAnswerController.getVoteAnswers)
 
 router.post('/api/voteanswers', sessionVerify, voteAnswerController.createVoteAnswer)
 
@@ -81,7 +81,7 @@ router.delete('/api/voteanswers/:id', sessionVerify, voteAnswerController.delete
 
 // Vote Questions
 
-router.get('/api/votequestions', sessionVerify, voteQuestionController.getVoteQuestions)
+router.get('/api/votequestions', voteQuestionController.getVoteQuestions)
 
 router.post('/api/votequestions', sessionVerify, voteQuestionController.createVoteQuestion)
 
