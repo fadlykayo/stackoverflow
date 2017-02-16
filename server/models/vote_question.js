@@ -7,8 +7,8 @@ module.exports = function (sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function (models) {
-        Vote_Questions.belongsTo(models.Users)
-        Vote_Questions.belongsTo(models.Questions)
+        Vote_Questions.belongsTo(models.Users, {foreignKey: 'userid'})
+        Vote_Questions.belongsTo(models.Questions, {foreignKey: 'questionid'})
       }
     }
   })

@@ -2,7 +2,11 @@ const models = require('../models')
 
 module.exports = {
   getAnswers: (req, res) => {
-    models.Answers.findAll().then(function (data) {
+    models.Answers.findAll({
+      include: [
+        {model: models.Vote_Answers}
+      ]
+    }).then(function (data) {
       res.send(data)
     }).catch(function (err) {
       res.send(err)

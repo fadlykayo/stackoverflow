@@ -5,7 +5,14 @@ let config = require('../config/config.json')
 
 module.exports = {
   getUsers: (req, res) => {
-    models.Users.findAll().then(function (data) {
+    models.Users.findAll({
+      include: [
+        {model: models.Questions},
+        {model: models.Vote_Questions},
+        {model: models.Answers},
+        {model: models.Vote_Answers}
+      ]
+    }).then(function (data) {
       res.send(data)
     }).catch(function (err) {
       res.send(err)

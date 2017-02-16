@@ -6,10 +6,10 @@ module.exports = function (sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function (models) {
-        Users.hasMany(models.Questions)
-        Users.hasMany(models.Answers)
-        Users.hasMany(models.Vote_Questions)
-        Users.hasMany(models.Vote_Answers)
+        Users.hasMany(models.Questions, {foreignKey: 'userid'})
+        Users.hasMany(models.Answers, {foreignKey: 'userid'})
+        Users.hasMany(models.Vote_Questions, {foreignKey: 'userid'})
+        Users.hasMany(models.Vote_Answers, {foreignKey: 'userid'})
       }
     }
   })
