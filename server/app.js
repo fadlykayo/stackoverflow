@@ -14,18 +14,6 @@ var app = express()
 let cors = require('cors')
 app.use(cors())
 
-// ====== Mongoose ======
-require('dotenv').config()
-let mongoose = require('mongoose')
-mongoose.connect(`${process.env.MONGODB_URI}`, function (err) { // localhost:27017 untuk di db
-  if (err) {
-    console.log(err)
-  } else {
-    console.log(`connected to ${process.env.PORT} ${process.env.MONGODB_URI}`)
-  }
-})
-mongoose.Promise = global.Promise
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
