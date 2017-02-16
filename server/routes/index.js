@@ -10,7 +10,7 @@ const sessionVerify = require('../helpers/auth.js')
 /* GET home page. */
 
 router.get('/', function (req, res, next) {
-  res.send('index')
+  res.send('Go to http://localhost:8080/')
 })
 
 router.get('/auth', function (req, res, next) {
@@ -53,40 +53,40 @@ router.get('/api', function (req, res, next) {
 
 router.get('/api/questions', questionController.getQuestions)
 
-router.post('/api/questions', sessionVerify, questionController.createQuestion)
+router.post('/api/questions', questionController.createQuestion)
 
-router.put('/api/questions/:id', sessionVerify, questionController.updateQuestion)
+router.put('/api/questions/:id', questionController.updateQuestion)
 
-router.delete('/api/questions/:id', sessionVerify, questionController.deleteQuestion)
+router.delete('/api/questions/:id', questionController.deleteQuestion)
 
 // Answers
 
 router.get('/api/answers', answerController.getAnswers)
 
-router.post('/api/answers', sessionVerify, answerController.createAnswer)
+router.post('/api/answers', answerController.createAnswer)
 
-router.put('/api/answers/:id', sessionVerify, answerController.updateAnswer)
+router.put('/api/answers/:id', answerController.updateAnswer)
 
-router.delete('/api/answers/:id', sessionVerify, answerController.deleteAnswer)
+router.delete('/api/answers/:id', answerController.deleteAnswer)
 
 // Vote Answers
 
 router.get('/api/voteanswers', voteAnswerController.getVoteAnswers)
 
-router.post('/api/voteanswers', sessionVerify, voteAnswerController.createVoteAnswer)
+router.post('/api/voteanswers', voteAnswerController.createVoteAnswer)
 
-router.put('/api/voteanswers/:id', sessionVerify, voteAnswerController.updateVoteAnswer)
+router.put('/api/voteanswers/:id', voteAnswerController.updateVoteAnswer)
 
-router.delete('/api/voteanswers/:id', sessionVerify, voteAnswerController.deleteVoteAnswer)
+router.delete('/api/voteanswers/:id', voteAnswerController.deleteVoteAnswer)
 
 // Vote Questions
 
 router.get('/api/votequestions', voteQuestionController.getVoteQuestions)
 
-router.post('/api/votequestions', sessionVerify, voteQuestionController.createVoteQuestion)
+router.post('/api/votequestions', voteQuestionController.createVoteQuestion)
 
-router.put('/api/votequestions/:id', sessionVerify, voteQuestionController.updateVoteQuestion)
+router.put('/api/votequestions/:id', voteQuestionController.updateVoteQuestion)
 
-router.delete('/api/votequestions/:id', sessionVerify, voteQuestionController.deleteVoteQuestion)
+router.delete('/api/votequestions/:id', voteQuestionController.deleteVoteQuestion)
 
 module.exports = router

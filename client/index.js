@@ -1,8 +1,11 @@
-var id_to_be_del = ''
-
 $(document).ready(function () {
-  $('.modal').modal()
+  getQuestions()
+  let userName = localStorage.getItem('Username')
+  $('#nav-username').text('Username: ' + userName)
 })
+
+// $('.modal').modal()
+let id_to_be_del = ''
 
 function setIdDel (id) {
   id_to_be_del = id
@@ -18,8 +21,9 @@ $('#login-form').on('submit', (e) => {
     url: 'http://localhost:3000/auth/users/login',
     data: {username: usernameVal, password: passwordVal},
     success: function (resp) {
-      console.log(resp)
       if (resp.token) {
+        localStorage.setItem('Authorization', resp.token)
+        localStorage.setItem('Username', usernameVal)
         window.location.assign('http://localhost:8080/home.html')
       }else {
         window.location.assign('http://localhost:8080/index.html')
@@ -32,25 +36,73 @@ $('#login-form').on('submit', (e) => {
   })
 })
 
-function getArticles () {
+$('#register-form').on('submit', (e) => {
+  e.preventDefault()
+  let usernameVal = $('input[name=username_reg]').val()
+  let passwordVal = $('input[name=password_reg]').val()
   $.ajax({
-    type: 'GET',
-    url: 'http://localhost:3000/api/articles',
+    type: 'POST',
+    url: 'http://localhost:3000/auth/users/register',
+    data: {username: usernameVal, password: passwordVal},
+    success: function () {
+      window.location.assign('http://localhost:8080/index.html')
+    },
+    error: function (err) {
+      console.log('REGISTER Request Error')
+      window.location.assign('http://localhost:8080/index.html')
+    }
+  })
+})
+
+$('#logout').click(function () {
+  window.localStorage.clear()
+  window.location.assign('http://localhost:8080/index.html')
+})
+
+$('#add-question').click(function (e) {
+  e.preventDefault()
+  let titleVal = $('input[name=title_create]').val()
+  let contentVal = $('input[name=content_create]').val()
+  $.ajax({
+    type: 'POST',
+    url: 'http://localhost:3000/api/questions',
+    data: {title: titleVal, content: contentVal},
     success: function (resp) {
       for (var i = 0; i < resp.length; i++) {
-        let article = resp[i]
+        let questions = resp[i]
         $('#posts').append(
-          `<div id="card_${article._id}" class="col s4 m4">
-            <div class="card blue-grey darken-1">
-              <div class="card-content white-text">
-                <h1 id="title-${i+1}" class="card-title">${article.title}</h1>
-                <p id="content-${i+1}">${article.content}</p>
-              </div>
-              <div class="card-action" style="display: flex; justify-content: space-around;">
-                <a class="btn" id="update-${i+1}" href="/update/${article._id}">Update</a>
-                <button id="delete-${i+1}" class="btn" data-target="modal1" onclick="setIdDel('${article._id}')">Delete</button>
-              </div>
-            </div>
+          `<tr>
+            <td>Alvin</td>
+            <td>Eclair</td>
+          </tr>
+          <div class="input-field col s12">
+            <textarea rows="10" cols="50" type="text" name="question_content" id="question_content" class="materialize-textarea"></textarea>
+            <label for="question_content">Textarea</label>
+          </div>`
+        )
+      }
+    },
+    error: function (err) {
+      console.log('CREATE Request Error')
+    }
+  })
+})
+
+function getQuestions () {
+  $.ajax({
+    type: 'GET',
+    url: 'http://localhost:3000/api/questions',
+    success: function (resp) {
+      for (var i = 0; i < resp.length; i++) {
+        let questions = resp[i]
+        $('#posts').append(
+          `<tr>
+            <td>Alvin</td>
+            <td>Eclair</td>
+          </tr>
+          <div class="input-field col s12">
+            <textarea rows="10" cols="50" type="text" name="question_content" id="question_content" class="materialize-textarea"></textarea>
+            <label for="question_content">Textarea</label>
           </div>`
         )
       }
@@ -73,21 +125,3 @@ function deleteArticle () {
     }
   })
 }
-
-$('#register-form').on('submit', (e) => {
-  e.preventDefault()
-  let usernameVal = $('input[name=username_reg]').val()
-  let passwordVal = $('input[name=password_reg]').val()
-  $.ajax({
-    type: 'POST',
-    url: 'http://localhost:3000/auth/users/register',
-    data: {username: usernameVal, password: passwordVal},
-    success: function () {
-      window.location.assign('http://localhost:8080/index.html')
-    },
-    error: function (err) {
-      console.log('REGISTER Request Error')
-      window.location.assign('http://localhost:8080/index.html')
-    }
-  })
-})
