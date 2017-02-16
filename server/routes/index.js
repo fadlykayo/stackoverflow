@@ -9,27 +9,6 @@ const sessionVerify = require('../helpers/auth.js')
 
 /* GET home page. */
 
-router.get('/home', sessionVerify, function (req, res, next) {
-  res.render('../../client/home')
-})
-
-router.get('/register', function (req, res, next) {
-  res.render('../../client/register')
-})
-//
-// router.get('/logout', sessionVerify, function (req, res, next) {
-//   req.session.destroy()
-//   res.redirect('/')
-// })
-//
-// router.get('/create', function (req, res, next) {
-//   res.render('pages/create')
-// })
-//
-// router.get('/update/:id', function (req, res, next) {
-//   res.render('pages/update', {id: req.params.id})
-// })
-
 router.get('/', function (req, res, next) {
   res.send('index')
 })

@@ -18,15 +18,16 @@ $('#login-form').on('submit', (e) => {
     url: 'http://localhost:3000/auth/users/login',
     data: {username: usernameVal, password: passwordVal},
     success: function (resp) {
+      console.log(resp)
       if (resp.token) {
-        window.location.assign('./home.html')
+        window.location.assign('http://localhost:8080/home.html')
       }else {
-        window.location.assign('./index.html')
+        window.location.assign('http://localhost:8080/index.html')
       }
     },
     error: function (err) {
-      console.log('LOGIN request error')
-      window.location.assign('http://localhost:3000/')
+      console.log('LOGIN Request Error')
+      window.location.assign('http://localhost:8080/index.html')
     }
   })
 })
@@ -72,3 +73,21 @@ function deleteArticle () {
     }
   })
 }
+
+$('#register-form').on('submit', (e) => {
+  e.preventDefault()
+  let usernameVal = $('input[name=username_reg]').val()
+  let passwordVal = $('input[name=password_reg]').val()
+  $.ajax({
+    type: 'POST',
+    url: 'http://localhost:3000/auth/users/register',
+    data: {username: usernameVal, password: passwordVal},
+    success: function () {
+      window.location.assign('http://localhost:8080/index.html')
+    },
+    error: function (err) {
+      console.log('REGISTER Request Error')
+      window.location.assign('http://localhost:8080/index.html')
+    }
+  })
+})
