@@ -1,4 +1,7 @@
 const models = require('../models')
+let jwt = require('jsonwebtoken')
+let hash = require('password-hash')
+let config = require('../configs/config.json')
 
 module.exports = {
   getUsers: (req, res) => {
@@ -39,6 +42,26 @@ module.exports = {
       }).catch(function (err) {
         res.send(err)
       })
+    })
+  },
+  verifyUser: (req, res) => {
+    models.Users.findOne({
+      where: {
+        username: req.body.username
+      }
+    }).then(function (data) {
+      if (hash.verify(req.body.password, data.password)) {
+        let token = jwt.sign({data}, config.secret, {algorithm: 'HS256'}, {expiresIn: '1h'})
+        req.session.isLogin = true
+        res.send({
+          s: true,
+          token: token
+        })
+      } else {
+        res.send({s: false, m: 'Authentication failed. Wrong password.'})
+      }
+    }).catch(function () {
+      res.send({s: false, m: 'Authentication failed. User not found.'})
     })
   }
 }
