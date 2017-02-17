@@ -2,6 +2,7 @@ $(document).ready(function () {
   getQuestions()
   let userName = localStorage.getItem('Username')
   $('#nav-username').text('Username: ' + userName)
+  let token = localStorage.getItem('Authorization')
 })
 
 // $('.modal').modal()
@@ -44,7 +45,9 @@ $('#register-form').on('submit', (e) => {
     type: 'POST',
     url: 'http://localhost:3000/auth/users/register',
     data: {username: usernameVal, password: passwordVal},
-    success: function () {
+    success: function (resp) {
+      console.log(resp)
+      localStorage.setItem('UserId', resp.id)
       window.location.assign('http://localhost:8080/index.html')
     },
     error: function (err) {
@@ -63,17 +66,21 @@ $('#add-question').click(function (e) {
   e.preventDefault()
   let titleVal = $('input[name=title_create]').val()
   let contentVal = $('input[name=content_create]').val()
+  let idVal = localStorage.getStorage('UserId')
   $.ajax({
     type: 'POST',
     url: 'http://localhost:3000/api/questions',
-    data: {title: titleVal, content: contentVal},
+    data: {title: titleVal, content: contentVal, userid: idVal},
     success: function (resp) {
+      $('input[name=title_create]').val('')
+      $('input[name=content_create]').val('')
       for (var i = 0; i < resp.length; i++) {
         let questions = resp[i]
         $('#posts').append(
           `<tr>
-            <td>Alvin</td>
-            <td>Eclair</td>
+            <td>${resp.title}</td>
+            <td>${resp.title}</td>
+            <td>${resp.content}</td>
           </tr>
           <div class="input-field col s12">
             <textarea rows="10" cols="50" type="text" name="question_content" id="question_content" class="materialize-textarea"></textarea>
