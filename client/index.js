@@ -64,8 +64,6 @@ $('#add-question').click(function () {
   let titleVal = $('input[name=title_create]').val()
   let contentVal = $('textarea[name=content_create]').val()
   let userId = localStorage.getItem('UserId')
-  $('#posts').empty()
-  $('#posts-content').empty()
   $.ajax({
     type: 'POST',
     url: 'http://localhost:3000/api/questions',
@@ -78,7 +76,7 @@ $('#add-question').click(function () {
         url: 'http://localhost:3000/api/votequestions',
         data: {questionid: resp.id, value: 0},
         success: function () {
-          getQuestions()
+          window.location.assign('http://localhost:8080/home.html')
         },
         error: function (err) {
           console.log('CREATE Vote Questions Request Error')
@@ -103,13 +101,10 @@ function getQuestions () {
         $('#posts').append(
           `<tr id="question-${i+1}">
             <td>${vote}</td>
-            <td>${questions.title}</td>
+            <td><a href="/question.html?id=${questions.id}">${questions.title}</a></td>
             <td>User ID: ${questions.userid}</td>
             <td style="max-width:50%"><button type="button" data-target="modal1" onclick="setId(${questions.id})" class="waves-effect waves-light btn cyan darken-3" style="padding: 0px 8px;">Reply</button> <button onclick="upVote(${questions.id}, ${vote}, ${voteId}, ${i+1})" type="button" class="waves-effect waves-light btn light-blue darken-3" style="padding: 0px 8px;">Upvote</button> <button type="button" class="waves-effect waves-light btn red darken-4" onclick="downVote(${questions.id}, ${vote}, ${voteId}, ${i+1})" style="padding: 0px 8px;">Downvote</button></td>
           </tr>`
-        )
-        $('#posts-content').append(
-          `<div name="question_content" style="height: 200px; padding:10px; margin: 10px 0px; border-radius: 4px; border: 1px solid grey;">${questions.content}</div>`
         )
       }
     },
