@@ -8,35 +8,67 @@
   </head>
   <body>
 
-    <div id="">
-      hhj
+    <nav class="navbar">
+      <div class="nav-wrapper" style="margin-top:10px;">
+        <a href="#" class="brand-logo">Mini Stackoverflow</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a id="nav-username" style="margin: 0px 20px 0px 0px; font-size:20px;"></a></li>
+          <li><a href="ask.html" class="btn red darken-4">Ask Question</a></li>
+          <li><button id="logout" class="btn red darken-4">Logout</button></li>
+        </ul>
+      </div>
+    </nav>
+    </br>
+
+    <div class="row" style="margin: 20px 100px;">
+      <div id="question">
+        <!-- question details -->
+        <h3 id="question-title">TITLE</h3>
+        <p  id="question-content">CONTENT</p>
+        <hr>
+        <h4 id="answers-">Anwers</h4>
+
+        <!-- loop over all answers of the question -->
+        <div class="">
+          <p data-id="1">ANSWER FIRST</p>
+          <small><span>answered by anon</span><span>12 hours ago</span></small>
+        </div>
+        <div class="">
+          <p data-id="2">ANSWER SECOND</p>
+          <small><span>answered by anon</span><span>12 hours ago</span></small>
+        </div>
+
+      </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
     <script src="index.js" charset="utf-8"></script>
+
     <script type="text/javascript">
-    function getUrlParameter(name) {
-      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-      var results = regex.exec(location.search);
-      return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    };
+      function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+      };
 
-    function getQuestionContent () {
-      $.ajax({
-        type: 'GET',
-        url: `http://localhost:3000/api/questions/${getUrlParameter('id')}`,
-        success: function (response) {
-          console.log(response);
-        },
-        error: function () {
-          console.log('GET Questions Response Error')
-        }
-      })
-    }
+      function getQuestionContent () {
+        $.ajax({
+          type: 'GET',
+          url: `http://localhost:3000/api/questions/${getUrlParameter('id')}`,
+          success: function (response) {
+            $('#question-title').text(response.title)
+            $('#question-content').text(response.content)
+          },
+          error: function () {
+            console.log('GET Questions Response Error')
+          }
+        })
+      }
 
-    getQuestionContent()
+      getQuestionContent()
 
     </script>
 
