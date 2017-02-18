@@ -61,14 +61,14 @@ module.exports = {
         let token = jwt.sign({data}, config.secret, {algorithm: 'HS256'}, {expiresIn: '1h'})
         // req.session.isLogin = true
         res.send({
-          s: true,
-          token: token
+          token: token,
+          id: data.id
         })
       } else {
-        res.send({s: false, m: 'Authentication failed. Wrong password.'})
+        res.send({m: 'Authentication failed. Wrong password.'})
       }
     }).catch(function () {
-      res.send({s: false, m: 'Authentication failed. User not found.'})
+      res.send({m: 'Authentication failed. User not found.'})
     })
   }
 }

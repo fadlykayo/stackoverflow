@@ -34,6 +34,9 @@ module.exports = {
   updateVoteAnswer: (req, res) => {
     models.Vote_Answers.findById(req.params.id).then(function (vote) {
       vote.update({
+        answerid: req.body.answerid,
+        questionid: req.body.questionid,
+        userid: req.body.userid,
         value: req.body.value
       }).then(function (data) {
         res.send(data)

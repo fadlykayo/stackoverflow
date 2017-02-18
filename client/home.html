@@ -32,7 +32,7 @@
           <textarea class="form-control" name="content_create" id="content_create" value="" style="height: 200px; padding:10px; margin: 10px 0px; border-radius: 4px; border-color: grey;" placeholder="Question's details..." required="required"></textarea>
         </div>
         </br>
-        <button type="submit" id="add-question" class="waves-effect waves-light btn teal darken-3">Add Question</button>
+        <button type="button" id="add-question" class="waves-effect waves-light btn teal darken-3">Add Question</button>
       </form>
       </br>
       </br>
@@ -43,14 +43,18 @@
         <thead>
           <tr>
             <th data-field="vote">Vote</th>
-            <th data-field="name">Title</th>
-            <th data-field="name">Reply</th>
+            <th data-field="title">Title</th>
+            <th data-field="user">Posted By</th>
+            <th data-field="action">Action</th>
           </tr>
         </thead>
         <tbody id="posts">
 
         </tbody>
       </table>
+      <div id="posts-content">
+
+      </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>

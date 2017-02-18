@@ -33,6 +33,8 @@ module.exports = {
   updateVoteQuestion: (req, res) => {
     models.Vote_Questions.findById(req.params.id).then(function (vote) {
       vote.update({
+        questionid: req.body.questionid,
+        userid: req.body.userid,
         value: req.body.value
       }).then(function (data) {
         res.send(data)
