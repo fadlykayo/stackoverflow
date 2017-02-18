@@ -161,25 +161,3 @@ function downVote (questId, voteValue, voteId, i) {
     }
   })
 }
-
-function addAnswer () {
-  let contentVal = $('textarea[name=content_reply]').val()
-  let userId = localStorage.getItem('UserId')
-  $('#posts').empty()
-  $('#posts-content').empty()
-  $.ajax({
-    type: 'POST',
-    url: `http://localhost:3000/api/answers`,
-    data: {
-      content: contentVal,
-      userid: userId,
-      questionid: `${questionId}`
-    },
-    success: function (resp) {
-      getQuestions()
-    },
-    error: function () {
-      console.log('DELETE Response Error')
-    }
-  })
-}

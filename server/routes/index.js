@@ -63,7 +63,9 @@ router.delete('/api/questions/:id', questionController.deleteQuestion)
 
 // Answers
 
-router.get('/api/answers', answerController.getAnswers)
+router.get('/api/answers', answerController.getAnswersAll)
+
+router.get('/api/answers/:id', answerController.getAnswersByQuestionId)
 
 router.post('/api/answers', answerController.createAnswer)
 

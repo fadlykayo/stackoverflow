@@ -26,18 +26,27 @@
         <h3 id="question-title">TITLE</h3>
         <p  id="question-content">CONTENT</p>
         <hr>
-        <h4 id="answers-">Anwers</h4>
 
         <!-- loop over all answers of the question -->
-        <div class="">
-          <p data-id="1">ANSWER FIRST</p>
-          <small><span>answered by anon</span><span>12 hours ago</span></small>
-        </div>
-        <div class="">
-          <p data-id="2">ANSWER SECOND</p>
-          <small><span>answered by anon</span><span>12 hours ago</span></small>
-        </div>
+        <div id="answers-list">
+          <!-- to be inserted later -->
+        </div> <!-- answers-list -->
 
+      </div>
+      <hr>
+      </br>
+      <div class="">
+        <form method="post">
+          <h5 style="color: #006666;">Post Answer</h5>
+          <hr style="border: 2px solid #006666;">
+          </br>
+          <div class="form-group">
+            <label for="content_reply">Content:</label>
+            <textarea class="form-control" name="content_reply" id="content_reply" value="" style="height: 280px; padding:10px; margin: 10px 0px; border-radius: 4px; border-color: grey;" placeholder="Answer's details..."></textarea>
+          </div>
+          </br>
+          <button type="button" onclick="addAnswer()" class="waves-effect waves-light btn teal darken-3">Add Answer</button>
+        </form>
       </div>
     </div>
 
@@ -68,8 +77,55 @@
         })
       }
 
-      getQuestionContent()
+      $(document).ready(function () {
+        getQuestionContent()
+        getAnswers()
+      })
 
+
+      function addAnswer () {
+        let contentVal = $('textarea[name=content_reply]').val()
+        let userId = localStorage.getItem('UserId')
+        $('#answers-list').empty()
+        $.ajax({
+          type: 'POST',
+          url: `http://localhost:3000/api/answers`,
+          data: {
+            content: contentVal,
+            userid: userId,
+            questionid: `${getUrlParameter('id')}`
+          },
+          success: function (resp) {
+            getAnswers()
+          },
+          error: function () {
+            console.log('DELETE Response Error')
+          }
+        })
+      }
+
+      function getAnswers() {
+        $.ajax({
+          type: 'GET',
+          url: `http://localhost:3000/api/answers/${getUrlParameter('id')}`,
+          success: function (response) {
+            let answers = ''
+            for (var i = 0; i < response.length; i++) {
+              const currentResponse = response[i]
+              answers +=
+              `<div>
+                <p>${currentResponse.content}</p>
+                <small><span>answered by anon</span><span>12 hours ago</span></small>
+              </div>
+              `
+            }
+            $('#answers-list').append(answers)
+          },
+          error: function () {
+            console.log('GET Questions Response Error')
+          }
+        })
+      }
     </script>
 
   </body>
