@@ -96,7 +96,7 @@ function getQuestions () {
             <td>${vote}</td>
             <td>${questions.title}</td>
             <td>User ID: ${questions.userid}</td>
-            <td style="max-width:50%"><button type="button" class="waves-effect waves-light btn cyan darken-3" onclick="" style="padding: 0px 8px;">Reply</button> <button type="button" class="waves-effect waves-light btn light-blue darken-3" onclick="upVote(${questions.id}, ${vote}, ${voteId}, ${i+1})" style="padding: 0px 8px;">Upvote</button> <button type="button" class="waves-effect waves-light btn red darken-4" onclick="downVote(${questions.id}, ${vote}, ${voteId})" style="padding: 0px 8px;">Downvote</button></td>
+            <td style="max-width:50%"><button type="button" class="waves-effect waves-light btn cyan darken-3" onclick="" style="padding: 0px 8px;">Reply</button> <button type="button" class="waves-effect waves-light btn light-blue darken-3" onclick="upVote(${questions.id}, ${vote}, ${voteId}, ${i+1})" style="padding: 0px 8px;">Upvote</button> <button type="button" class="waves-effect waves-light btn red darken-4" onclick="downVote(${questions.id}, ${vote}, ${voteId}, ${i+1})" style="padding: 0px 8px;">Downvote</button></td>
           </tr>`
         )
         $('#posts-content').append(
@@ -112,18 +112,17 @@ function getQuestions () {
 
 function upVote (id, vote, voteId, i) {
   let idVal = localStorage.getItem('UserId')
-  let up = vote++
+  vote++
   $.ajax({
     type: 'PUT',
     url: `http://localhost:3000/api/votequestions/${voteId}`,
     data: {
       questionid: id,
       userid: idVal,
-      value: up
+      value: vote
     },
     success: function (resp) {
-      console.log(resp.value)
-      $(`#question-${i} td[0]`).innerHTML = resp.value
+      $(`#question-${i} td`)[0].innerHTML = resp.value
     },
     error: function (err) {
       console.log('CREATE Vote Questions Request Error')
@@ -131,17 +130,20 @@ function upVote (id, vote, voteId, i) {
   })
 }
 
-function downVote (id, vote, voteId) {
+function downVote (id, vote, voteId, i) {
   let idVal = localStorage.getItem('UserId')
+  vote--
   $.ajax({
     type: 'PUT',
     url: `http://localhost:3000/api/votequestions/${voteId}`,
     data: {
       questionid: id,
       userid: idVal,
-      value: vote--
+      value: vote
     },
-    success: function (resp) {},
+    success: function (resp) {
+      $(`#question-${i} td`)[0].innerHTML = resp.value
+    },
     error: function (err) {
       console.log('CREATE Vote Questions Request Error')
     }
