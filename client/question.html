@@ -22,20 +22,17 @@
 
     <div class="row" style="margin: 20px 100px;">
       <div id="question">
-        <!-- question details -->
-        <h3 id="question-title">TITLE</h3>
-        <p  id="question-content">CONTENT</p>
+        <h3 id="question-title"></h3>
+        <p id="question-content"></p>
         <hr>
 
-        <!-- loop over all answers of the question -->
         <div id="answers-list">
-          <!-- to be inserted later -->
-        </div> <!-- answers-list -->
 
+        </div>
       </div>
       <hr>
       </br>
-      <div class="">
+      <div>
         <form method="post">
           <h5 style="color: #006666;">Post Answer</h5>
           <hr style="border: 2px solid #006666;">
@@ -53,7 +50,6 @@
     <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-    <script src="index.js" charset="utf-8"></script>
 
     <script type="text/javascript">
       function getUrlParameter(name) {
@@ -62,6 +58,11 @@
         var results = regex.exec(location.search);
         return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
       };
+
+      $(document).ready(function () {
+        getQuestionContent()
+        getAnswers()
+      })
 
       function getQuestionContent () {
         $.ajax({
@@ -72,16 +73,10 @@
             $('#question-content').text(response.content)
           },
           error: function () {
-            console.log('GET Questions Response Error')
+            console.log('GET Question Content Response Error')
           }
         })
       }
-
-      $(document).ready(function () {
-        getQuestionContent()
-        getAnswers()
-      })
-
 
       function addAnswer () {
         let contentVal = $('textarea[name=content_reply]').val()
@@ -99,7 +94,7 @@
             getAnswers()
           },
           error: function () {
-            console.log('DELETE Response Error')
+            console.log('POST Add Answer Response Error')
           }
         })
       }
@@ -109,20 +104,68 @@
           type: 'GET',
           url: `http://localhost:3000/api/answers/${getUrlParameter('id')}`,
           success: function (response) {
-            let answers = ''
+            console.log(response);
+            let answersList = ''
             for (var i = 0; i < response.length; i++) {
-              const currentResponse = response[i]
-              answers +=
+              let answers = response[i]
+              // let vote = answers.Vote_Answers[0].value
+              // let voteId = answers.Vote_Answers[0].id
+              answersList +=
               `<div>
-                <p>${currentResponse.content}</p>
+                <p>${answers.content}</p>
                 <small><span>answered by anon</span><span>12 hours ago</span></small>
-              </div>
-              `
+              </div>`
             }
-            $('#answers-list').append(answers)
+            $('#answers-list').append(answersList)
           },
           error: function () {
-            console.log('GET Questions Response Error')
+            console.log('GET Answers Response Error')
+          }
+        })
+      }
+
+      function upVote (questId, voteValue, voteId, i) {
+        let userId = localStorage.getItem('UserId')
+        voteValue++
+        $('#answers-list').empty()
+        $.ajax({
+          type: 'PUT',
+          url: `http://localhost:3000/api/votequestions/${voteId}`,
+          data: {
+            questionid: questId,
+            userid: userId,
+            value: voteValue
+          },
+          success: function (resp) {
+            getAnswers()
+          },
+          error: function (err) {
+            console.log('PUT Up Vote Answers Request Error')
+          }
+        })
+      }
+
+      function downVote (questId, voteValue, voteId, i) {
+        let userId = localStorage.getItem('UserId')
+        if (voteValue === 0) {
+          voteValue
+        }else {
+          voteValue--
+        }
+        $('#answers-list').empty()
+        $.ajax({
+          type: 'PUT',
+          url: `http://localhost:3000/api/votequestions/${voteId}`,
+          data: {
+            questionid: questId,
+            userid: userId,
+            value: voteValue
+          },
+          success: function (resp) {
+            getAnswers()
+          },
+          error: function (err) {
+            console.log('PUT Down Vote Answers Request Error')
           }
         })
       }
