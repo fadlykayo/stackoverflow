@@ -14,6 +14,13 @@ module.exports = {
       res.send(err)
     })
   },
+  getQuestion: (req, res) => {
+    models.Questions.findById(req.params.id).then(function (data) {
+      res.send(data)
+    }).catch(function (err) {
+      res.send(err)
+    })
+  },
   createQuestion: (req, res) => {
     models.Questions.create({
       title: req.body.title,

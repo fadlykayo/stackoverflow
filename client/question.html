@@ -11,6 +11,10 @@
     <div id="">
       hhj
     </div>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+    <script src="index.js" charset="utf-8"></script>
     <script type="text/javascript">
     function getUrlParameter(name) {
       name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -18,12 +22,23 @@
       var results = regex.exec(location.search);
       return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     };
-    let questionId = getUrlParameter('id')
+
+    function getQuestionContent () {
+      $.ajax({
+        type: 'GET',
+        url: `http://localhost:3000/api/questions/${getUrlParameter('id')}`,
+        success: function (response) {
+          console.log(response);
+        },
+        error: function () {
+          console.log('GET Questions Response Error')
+        }
+      })
+    }
+
+    getQuestionContent()
 
     </script>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
-    <script src="index.js" charset="utf-8"></script>
+
   </body>
 </html>

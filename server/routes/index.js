@@ -53,6 +53,8 @@ router.get('/api', function (req, res, next) {
 
 router.get('/api/questions', questionController.getQuestions)
 
+router.get('/api/questions/:id', questionController.getQuestion)
+
 router.post('/api/questions', questionController.createQuestion)
 
 router.put('/api/questions/:id', questionController.updateQuestion)
