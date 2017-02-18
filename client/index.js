@@ -2,7 +2,15 @@ $(document).ready(function () {
   getQuestions()
   let userName = localStorage.getItem('Username')
   $('#nav-username').text('Username: ' + userName)
+  $('.modal').modal()
 })
+
+let questionId = ''
+
+function setId (id) {
+  questionId = id
+  return questionId
+}
 
 $('#login-form').on('submit', (e) => {
   e.preventDefault()
@@ -55,11 +63,13 @@ $('#logout').click(function () {
 $('#add-question').click(function () {
   let titleVal = $('input[name=title_create]').val()
   let contentVal = $('textarea[name=content_create]').val()
-  let idVal = localStorage.getItem('UserId')
+  let userId = localStorage.getItem('UserId')
+  $('#posts').empty()
+  $('#posts-content').empty()
   $.ajax({
     type: 'POST',
     url: 'http://localhost:3000/api/questions',
-    data: {title: titleVal, content: contentVal, userid: idVal},
+    data: {title: titleVal, content: contentVal, userid: userId},
     success: function (resp) {
       $('input[name=title_create]').val('')
       $('textarea[name=content_create]').val('')
@@ -88,15 +98,14 @@ function getQuestions () {
     success: function (resp) {
       for (var i = 0; i < resp.length; i++) {
         let questions = resp[i]
-        let length = (questions.Vote_Questions.length) - 1
-        let vote = questions.Vote_Questions[length].value
-        let voteId = questions.Vote_Questions[length].id
+        let vote = questions.Vote_Questions[0].value
+        let voteId = questions.Vote_Questions[0].id
         $('#posts').append(
           `<tr id="question-${i+1}">
             <td>${vote}</td>
             <td>${questions.title}</td>
             <td>User ID: ${questions.userid}</td>
-            <td style="max-width:50%"><button type="button" class="waves-effect waves-light btn cyan darken-3" onclick="" style="padding: 0px 8px;">Reply</button> <button type="button" class="waves-effect waves-light btn light-blue darken-3" onclick="upVote(${questions.id}, ${vote}, ${voteId}, ${i+1})" style="padding: 0px 8px;">Upvote</button> <button type="button" class="waves-effect waves-light btn red darken-4" onclick="downVote(${questions.id}, ${vote}, ${voteId}, ${i+1})" style="padding: 0px 8px;">Downvote</button></td>
+            <td style="max-width:50%"><button type="button" data-target="modal1" onclick="setId(${questions.id})" class="waves-effect waves-light btn cyan darken-3" style="padding: 0px 8px;">Reply</button> <button onclick="upVote(${questions.id}, ${vote}, ${voteId}, ${i+1})" type="button" class="waves-effect waves-light btn light-blue darken-3" style="padding: 0px 8px;">Upvote</button> <button type="button" class="waves-effect waves-light btn red darken-4" onclick="downVote(${questions.id}, ${vote}, ${voteId}, ${i+1})" style="padding: 0px 8px;">Downvote</button></td>
           </tr>`
         )
         $('#posts-content').append(
@@ -110,19 +119,21 @@ function getQuestions () {
   })
 }
 
-function upVote (id, vote, voteId, i) {
-  let idVal = localStorage.getItem('UserId')
-  vote++
+function upVote (questId, voteValue, voteId, i) {
+  let userId = localStorage.getItem('UserId')
+  voteValue++
+  $('#posts').empty()
+  $('#posts-content').empty()
   $.ajax({
     type: 'PUT',
     url: `http://localhost:3000/api/votequestions/${voteId}`,
     data: {
-      questionid: id,
-      userid: idVal,
-      value: vote
+      questionid: questId,
+      userid: userId,
+      value: voteValue
     },
     success: function (resp) {
-      $(`#question-${i} td`)[0].innerHTML = resp.value
+      getQuestions()
     },
     error: function (err) {
       console.log('CREATE Vote Questions Request Error')
@@ -130,19 +141,25 @@ function upVote (id, vote, voteId, i) {
   })
 }
 
-function downVote (id, vote, voteId, i) {
-  let idVal = localStorage.getItem('UserId')
-  vote--
+function downVote (questId, voteValue, voteId, i) {
+  let userId = localStorage.getItem('UserId')
+  if (voteValue === 0) {
+    voteValue
+  }else {
+    voteValue--
+  }
+  $('#posts').empty()
+  $('#posts-content').empty()
   $.ajax({
     type: 'PUT',
     url: `http://localhost:3000/api/votequestions/${voteId}`,
     data: {
-      questionid: id,
-      userid: idVal,
-      value: vote
+      questionid: questId,
+      userid: userId,
+      value: voteValue
     },
     success: function (resp) {
-      $(`#question-${i} td`)[0].innerHTML = resp.value
+      getQuestions()
     },
     error: function (err) {
       console.log('CREATE Vote Questions Request Error')
@@ -150,20 +167,21 @@ function downVote (id, vote, voteId, i) {
   })
 }
 
-// $('.modal').modal()
-let id_to_be_del = ''
-
-function setIdDel (id) {
-  id_to_be_del = id
-  return id_to_be_del
-}
-
-function deleteArticle () {
+function addAnswer () {
+  let contentVal = $('textarea[name=content_reply]').val()
+  let userId = localStorage.getItem('UserId')
+  $('#posts').empty()
+  $('#posts-content').empty()
   $.ajax({
-    type: 'DELETE',
-    url: `http://localhost:3000/api/articles/${id_to_be_del}`,
+    type: 'POST',
+    url: `http://localhost:3000/api/answers`,
+    data: {
+      content: contentVal,
+      userid: userId,
+      questionid: `${questionId}`
+    },
     success: function (resp) {
-      $(`#card_${id_to_be_del}`).remove()
+      getQuestions()
     },
     error: function () {
       console.log('DELETE Response Error')

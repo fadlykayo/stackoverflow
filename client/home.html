@@ -19,7 +19,7 @@
     </br>
     <div class="row" style="margin: 20px 100px;">
       </br>
-      <form action="/api/articles" method="post">
+      <form method="post">
         <h5 style="color: #006666;">Question</h5>
         <hr style="border: 2px solid #006666;">
         </br>
@@ -54,6 +54,26 @@
       </table>
       <div id="posts-content">
 
+      </div>
+
+      <div id="posts-answer">
+
+      </div>
+    </div>
+
+    <div id="modal1" class="modal modal-fixed-footer">
+      <div class="modal-content">
+        <form method="post">
+          <h5 style="color: #006666;">Answer</h5>
+          <hr style="border: 2px solid #006666;">
+          </br>
+          <div class="form-group">
+            <label for="content_reply">Content:</label>
+            <textarea class="form-control" name="content_reply" id="content_reply" value="" style="height: 280px; padding:10px; margin: 10px 0px; border-radius: 4px; border-color: grey;" placeholder="Answer's details..."></textarea>
+          </div>
+          </br>
+          <button type="button" onclick="addAnswer()" class="waves-effect waves-light btn teal darken-3">Add Answer</button>
+        </form>
       </div>
     </div>
 
