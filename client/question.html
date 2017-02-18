@@ -13,36 +13,42 @@
         <a href="#" class="brand-logo">Mini Stackoverflow</a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
           <li><a id="nav-username" style="margin: 0px 20px 0px 0px; font-size:20px;"></a></li>
-          <li><a href="ask.html" class="btn red darken-4">Ask Question</a></li>
           <li><button id="logout" class="btn red darken-4">Logout</button></li>
         </ul>
       </div>
     </nav>
-    </br>
+    <br>
 
     <div class="row" style="margin: 20px 100px;">
       <div id="question">
-        <h3 id="question-title"></h3>
-        <p id="question-content"></p>
+        <label style="color:#0277bd; font-size:20px;">Title:</label>
         <hr>
-
-        <div id="answers-list">
-
-        </div>
+        <h3 style="margin-top:10px;" id="question-title"></h3>
+        <p style="height: 280px; padding:10px; margin: 10px 0px; border-radius: 4px; border: 1px solid grey;" id="question-content"></p>
       </div>
-      <hr>
-      </br>
+      <br>
+
+      <label style="color:#0277bd; font-size:20px;">Answers:</label>
+
+      <div id="answers-list">
+
+      </div>
+      <br>
+      <br>
+      <br>
+
       <div>
         <form method="post">
           <h5 style="color: #006666;">Post Answer</h5>
           <hr style="border: 2px solid #006666;">
-          </br>
+          <br>
           <div class="form-group">
             <label for="content_reply">Content:</label>
-            <textarea class="form-control" name="content_reply" id="content_reply" value="" style="height: 280px; padding:10px; margin: 10px 0px; border-radius: 4px; border-color: grey;" placeholder="Answer's details..."></textarea>
+            <textarea name="content_reply" id="content_reply" style="height: 280px; padding:10px; margin: 10px 0px; border-radius: 4px; border-color: grey;" placeholder="Answer's details..."></textarea>
           </div>
-          </br>
-          <button type="button" onclick="addAnswer()" class="waves-effect waves-light btn teal darken-3">Add Answer</button>
+          <br>
+          <button type="button" onclick="addAnswer()" class="btn teal darken-3">Add Answer</button>
+          <a href="/home.html" class="btn red darken-4">Cancel</a>
         </form>
       </div>
     </div>
@@ -62,6 +68,8 @@
       $(document).ready(function () {
         getQuestionContent()
         getAnswers()
+        let userName = localStorage.getItem('Username')
+        $('#nav-username').text('Username: ' + userName)
       })
 
       function getQuestionContent () {
@@ -91,6 +99,7 @@
             questionid: `${getUrlParameter('id')}`
           },
           success: function (resp) {
+            console.log(resp);
             getAnswers()
           },
           error: function () {
@@ -104,16 +113,16 @@
           type: 'GET',
           url: `http://localhost:3000/api/answers/${getUrlParameter('id')}`,
           success: function (response) {
-            console.log(response);
             let answersList = ''
             for (var i = 0; i < response.length; i++) {
               let answers = response[i]
               // let vote = answers.Vote_Answers[0].value
               // let voteId = answers.Vote_Answers[0].id
               answersList +=
-              `<div>
+              `<hr>
+              <div>
                 <p>${answers.content}</p>
-                <small><span>answered by anon</span><span>12 hours ago</span></small>
+                <small><span>answered by anon </span><span>1 minute ago</span></small>
               </div>`
             }
             $('#answers-list').append(answersList)
