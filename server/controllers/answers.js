@@ -16,7 +16,10 @@ module.exports = {
     models.Answers.findAll({
       where: {
         questionid: req.params.id
-      }
+      },
+      include: [
+        {model: models.Vote_Answers}
+      ]
     }).then(function (data) {
       res.send(data)
     }).catch(function (err) {

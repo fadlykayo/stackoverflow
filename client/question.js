@@ -36,11 +36,21 @@ function addAnswer () {
     data: {
       content: contentVal,
       userid: userId,
-      questionid: `${getUrlParameter('id')}`
+      questionid: getUrlParameter('id')
     },
     success: function (resp) {
       $('textarea[name=content_reply]').val('')
-      getAnswers()
+      $.ajax({
+        type: 'POST',
+        url: 'http://localhost:3000/api/voteanswers',
+        data: {answerid: resp.id, questionid: getUrlParameter('id'), value: 0},
+        success: function () {
+          getAnswers()
+        },
+        error: function (err) {
+          console.log('CREATE Vote Answers Request Error')
+        }
+      })
     },
     error: function () {
       console.log('POST Add Answer Response Error')
@@ -56,18 +66,19 @@ function getAnswers () {
       let answersList = ''
       for (var i = 0; i < response.length; i++) {
         let answers = response[i]
-        // let vote = answers.Vote_Answers[0].value
-        // let voteId = answers.Vote_Answers[0].id
+        let vote = answers.Vote_Answers[0].value
+        let voteId = answers.Vote_Answers[0].id
         answersList +=
           `<hr>
-        <div>
-          <p>${answers.content}</p>
-          <small><span>answered by anon </span><span>just now</span></small>
-        </div>
-        <br>
-        <button onclick="" type="button" class="btn light-green darken-3" style="padding: 0px 8px;">Upvote</button> <button type="button" class="btn red darken-4" onclick="" style="padding: 0px 8px;">Downvote</button>
-        <br>
-        <br>`
+          <label style="color: #9e9d24;">Votes: ${vote}</label>
+          <div>
+            <p>${answers.content}</p>
+            <small><span>answered by anon </span><span>just now</span></small>
+          </div>
+          <br>
+          <button onclick="upVote(${answers.id}, ${answers.questionid}, ${vote}, ${voteId})" type="button" class="btn light-green darken-3" style="padding: 0px 8px;">Upvote</button> <button type="button" class="btn red darken-4" onclick="downVote(${answers.id}, ${answers.questionid}, ${vote}, ${voteId})" style="padding: 0px 8px;">Downvote</button>
+          <br>
+          <br>`
       }
       $('#answers-list').append(answersList)
     },
@@ -77,14 +88,15 @@ function getAnswers () {
   })
 }
 
-function upVote (questId, voteValue, voteId, i) {
+function upVote (answerId, questId, voteValue, voteId) {
   let userId = localStorage.getItem('UserId')
   voteValue++
   $('#answers-list').empty()
   $.ajax({
     type: 'PUT',
-    url: `http://localhost:3000/api/votequestions/${voteId}`,
+    url: `http://localhost:3000/api/voteanswers/${voteId}`,
     data: {
+      // answerid:
       questionid: questId,
       userid: userId,
       value: voteValue
@@ -98,7 +110,7 @@ function upVote (questId, voteValue, voteId, i) {
   })
 }
 
-function downVote (questId, voteValue, voteId, i) {
+function downVote (answerId, questId, voteValue, voteId) {
   let userId = localStorage.getItem('UserId')
   if (voteValue === 0) {
     voteValue
@@ -108,8 +120,9 @@ function downVote (questId, voteValue, voteId, i) {
   $('#answers-list').empty()
   $.ajax({
     type: 'PUT',
-    url: `http://localhost:3000/api/votequestions/${voteId}`,
+    url: `http://localhost:3000/api/voteanswers/${voteId}`,
     data: {
+      // answerid:
       questionid: questId,
       userid: userId,
       value: voteValue
