@@ -78,7 +78,7 @@ function getAnswers () {
           <label style="color: #9e9d24;">Votes: ${vote}</label>
           <div>
             <p>${answers.content}</p>
-            <small><span>answered by anon </span><span>just now</span></small>
+            <small><span>Answered by User ID: ${answers.userid} </span><span>, Date: ${new Date(answers.updatedAt)}</span></small>
           </div>
           <br>
           <button onclick="upVote(${answers.id}, ${answers.questionid}, ${vote}, ${voteId})" type="button" class="btn light-green darken-3" style="padding: 0px 8px;">Upvote</button> <button type="button" class="btn red darken-4" onclick="downVote(${answers.id}, ${answers.questionid}, ${vote}, ${voteId})" style="padding: 0px 8px;">Downvote</button>
@@ -101,7 +101,7 @@ function upVote (answerId, questId, voteValue, voteId) {
     type: 'PUT',
     url: `http://localhost:3000/api/voteanswers/${voteId}`,
     data: {
-      // answerid:
+      answerid: answerId,
       questionid: questId,
       userid: userId,
       value: voteValue
@@ -127,7 +127,7 @@ function downVote (answerId, questId, voteValue, voteId) {
     type: 'PUT',
     url: `http://localhost:3000/api/voteanswers/${voteId}`,
     data: {
-      // answerid:
+      answerid: answerId,
       questionid: questId,
       userid: userId,
       value: voteValue
