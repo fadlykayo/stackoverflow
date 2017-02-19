@@ -12,6 +12,11 @@ $(document).ready(function () {
   $('#nav-username').text('Username: ' + userName)
 })
 
+$('#logout').click(function () {
+  window.localStorage.clear()
+  window.location.assign('http://localhost:8080/home.html')
+})
+
 function getQuestionContent () {
   $.ajax({
     type: 'GET',

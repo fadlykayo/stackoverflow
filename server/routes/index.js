@@ -5,7 +5,6 @@ const questionController = require('../controllers/questions')
 const answerController = require('../controllers/answers')
 const voteAnswerController = require('../controllers/vote_answers')
 const voteQuestionController = require('../controllers/vote_questions')
-const sessionVerify = require('../helpers/auth.js')
 
 /* GET home page. */
 
